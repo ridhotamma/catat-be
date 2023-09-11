@@ -7,10 +7,13 @@ Rails.application.routes.draw do
       get 'users/:id', to: 'users#show'
       put 'users/:id', to: 'users#update'
 
+      resources :attendance_requests
       resources :attendance_settings
       resources :departments
-      resources :organizations
       resources :roles
+      resources :organizations do
+        get 'attendance_settings', on: :member
+      end
     end
   end
 end

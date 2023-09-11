@@ -1,5 +1,5 @@
 class Api::V1::OrganizationsController < ApplicationController
-    before_action :set_organization, only: [:show, :update, :destroy]
+    before_action :set_organization, only: [:show, :update, :destroy, :attendance_settings]
   
     # GET /api/v1/organizations
     def index
@@ -37,7 +37,18 @@ class Api::V1::OrganizationsController < ApplicationController
       @organization.destroy
       head :no_content
     end
-  
+    
+    
+    # GET /api/v1/organizations/:id/attendance_settings
+    def attendance_settings
+      puts "HIHIHI"
+      if @organization.attendance_setting
+        render json: @organization.attendance_setting
+      else
+        render json: { message: 'Attendance setting not found for this organization' }, status: :not_found
+      end
+    end
+
     private
   
     def set_organization

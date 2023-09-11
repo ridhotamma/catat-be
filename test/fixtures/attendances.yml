@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  requested_by: one
+  approved_by: one
+  notes: one
+  requested_at: 2023-09-11
+  live_location: MyString
+  selfie_image: MyString
+
+two:
+  requested_by: two
+  approved_by: two
+  notes: two
+  requested_at: 2023-09-11
+  live_location: MyString
+  selfie_image: MyString

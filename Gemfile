@@ -28,6 +28,9 @@ gem "jwt"
 gem 'kaminari'
 gem 'faker', '~> 2.18', require: 'faker'
 
+group :development, :test do
+  gem 'rspec-rails'
+end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ mingw mswin x64_mingw jruby ]
