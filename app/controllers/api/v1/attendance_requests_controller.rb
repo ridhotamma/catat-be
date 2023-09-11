@@ -1,6 +1,10 @@
 class Api::V1::AttendanceRequestsController < ApplicationController
+    load_and_authorize_resource
     before_action :set_attendance_request, only: [:show, :update, :destroy, :approve, :reject]
-  
+    rescue_from CanCan::AccessDenied do |exception|
+      render json: { error: 'Access denied', message: exception.message }, status: :forbidden
+    end
+
     # GET /api/v1/attendance_requests
     def index
         @attendance_requests = AttendanceRequest.includes(:requested_by, :approved_by, :attendance_status).all

@@ -27,6 +27,7 @@ gem "bcrypt", "~> 3.1.7"
 gem "jwt"
 gem 'kaminari'
 gem 'faker', '~> 2.18', require: 'faker'
+gem 'cancancan'
 
 group :development, :test do
   gem 'rspec-rails'
