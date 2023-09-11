@@ -10,9 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_11_024521) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_11_044713) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "attendance_settings", force: :cascade do |t|
+    t.boolean "enable_live_location"
+    t.boolean "enable_take_selfie"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "email"
