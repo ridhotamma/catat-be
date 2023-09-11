@@ -6,7 +6,7 @@ class Api::V1::UsersController < ApplicationController
       page = params[:page] || 1
       per_page = params[:per_page] || 10
     
-      @users = User.page(page).per(per_page)
+      @users = User.includes(:organization, :department, :role).page(page).per(per_page)
     
       total_record = @users.total_count
       total_page = @users.total_pages
@@ -18,8 +18,15 @@ class Api::V1::UsersController < ApplicationController
         per_page: per_page.to_i
       }
     
-      render json: { data: @users, meta: meta }
-    end
+      render json: { data: @users.as_json(
+        include: {
+          organization: { only: :name },
+          department: { only: :name },
+          role: { only: :name }
+        },
+        except: [:password_digest, :created_at, :updated_at]
+      ), meta: meta }
+    end    
 
     def show
       render json: @user, serializer: UserSerializer

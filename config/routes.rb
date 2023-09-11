@@ -6,6 +6,11 @@ Rails.application.routes.draw do
       get 'users', to: 'users#index'
       get 'users/:id', to: 'users#show'
       put 'users/:id', to: 'users#update'
+
+      resources :attendance_settings
+      resources :departments
+      resources :organizations
+      resources :roles
     end
   end
 end

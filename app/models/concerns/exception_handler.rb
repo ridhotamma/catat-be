@@ -13,6 +13,10 @@ module ExceptionHandler
       rescue_from ActionController::RoutingError do |e|
         json_response({ error: 'Route not found' }, :not_found)
       end
+
+      rescue_from ActionController::BadRequest do |e|
+        json_response({ error: 'Bad request' }, :bad_request)
+      end
     end
   
     private
