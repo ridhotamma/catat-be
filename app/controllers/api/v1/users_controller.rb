@@ -1,6 +1,6 @@
 class Api::V1::UsersController < ApplicationController
     include ExceptionHandler
-    before_action :set_user, only: [:show, :update]
+    before_action :set_user, only: [:show, :update, :destroy]
 
     def index
       page = params[:page] || 1
@@ -58,7 +58,12 @@ class Api::V1::UsersController < ApplicationController
         render json: { error: 'Invalid email or password' }, status: :unauthorized
       end
     end
-  
+    
+    def destroy
+      @user.destroy
+      head :no_content
+    end
+
     private
 
     def user_params
