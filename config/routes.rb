@@ -7,6 +7,9 @@ Rails.application.routes.draw do
       get 'users/:id', to: 'users#show'
       put 'users/:id', to: 'users#update'
 
+      get 'profile', to: 'users#profile'
+      put 'profile', to: 'users#update_profile'
+
       resources :attendance_settings
       resources :departments
       resources :roles

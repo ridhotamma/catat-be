@@ -6,11 +6,17 @@ class User < ApplicationRecord
     has_secure_password
   
     validates :email, presence: true, uniqueness: true, format: { with: /\A[^@\s]+@([^@\s]+\.)+[^@\s]+\z/ }
-    validates :password, presence: true, length: { minimum: 8 }
+    validates :password, presence: true, length: { minimum: 8 }, if: :password_required?
     validate :password_complexity
   
     private
   
+    def password_required?
+      changing_password || new_record?
+    end
+    
+    attr_accessor :changing_password
+
     def password_complexity
       return if password.blank?
   

@@ -59,6 +59,18 @@ class Api::V1::UsersController < ApplicationController
       end
     end
     
+    def profile
+      render json: @current_user
+    end
+
+    def update_profile
+      if @current_user.update(self_update_allowed_params)
+        render json: { message: 'User updated successfully' }
+      else
+        render json: { error: @current_user.errors.full_messages.join(', ') }, status: :unprocessable_entity
+      end
+    end
+
     def destroy
       @user.destroy
       head :no_content
@@ -79,7 +91,11 @@ class Api::V1::UsersController < ApplicationController
     end
 
     def update_allowed_params
-      params.require(:user).permit(:role, :profile_picture, :department)
+      params.require(:user).permit(:role_id, :profile_picture, :department_id, :password)
+    end
+
+    def self_update_allowed_params
+      params.require(:user).permit(:profile_picture, :department_id, :password)
     end
   end
   
