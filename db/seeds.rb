@@ -19,13 +19,18 @@ Role.create(name: 'Supervisor', code: 'SUPERVISOR')
   end
 
   20.times do
-    User.create(
+    user = User.create(
+      first_name: Faker::Name.unique.name,
+      last_name: Faker::Name.unique.name,
       email: Faker::Internet.email,
-      password: 'Password123', # Set a default password for all users
+      password: 'Password123',
       role_id: Role.all.sample.id,
       organization_id: Organization.all.sample.id,
       department_id: Department.all.sample.id
     )
+    user.profile_picture.attach(io: File.open(Rails.root.join('assets', 'avatar-default.jpeg')),
+    filename: 'default_profile_picture.jpg',
+    content_type: 'image/jpeg')
   end
 
   1.times do

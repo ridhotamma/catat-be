@@ -1,19 +1,7 @@
 class UserSerializer < ActiveModel::Serializer
-  attributes :id, :email, :profile_picture, :department, :organization, :role, :created_at, :updated_at
+  attributes :id, :first_name, :last_name, :email, :profile_picture_url
 
-   def attributes(*args)
-    super.except(:created_at, :updated_at)
-  end
-
-  def organization
-    object.organization.as_json(except: [:created_at, :updated_at])
-  end
-
-  def department
-    object.department.as_json(except: [:created_at, :updated_at])
-  end
-
-  def role
-    object.role.as_json(except: [:created_at, :updated_at])
-  end
+  belongs_to :organization, only: [:name]
+  belongs_to :department, only: [:name]
+  belongs_to :role, only: [:name]
 end

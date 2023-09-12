@@ -29,15 +29,7 @@ class Api::V1::UsersController < ApplicationController
     end    
 
     def show
-      render json: @user.as_json(
-        methods: :profile_picture_url,
-        include: {
-          organization: { only: :name },
-          department: { only: :name },
-          role: { only: :name }
-        },
-        except: [:password_digest, :created_at, :updated_at]
-      )
+      render json: @user, serializer: UserSerializer
     end
 
     def create

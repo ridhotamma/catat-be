@@ -1,4 +1,3 @@
-# frozen_string_literal: true
 class Ability
   include CanCan::Ability
 
@@ -7,10 +6,9 @@ class Ability
     when 'ADMIN'
       can :manage, :all
     when 'SUPERVISOR'
-      can [:read, :create, :update], Api::V1::AttendanceRequestsController
-      can [:approve, :reject], Api::V1::AttendanceRequestsController
+      can :manage, :all
     when 'STAFF'
-      can [:read, :create], Api::V1::AttendanceRequestsController
+      can :manage, :all
     end
   end
 end
