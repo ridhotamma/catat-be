@@ -1,5 +1,6 @@
 class Api::V1::OrganizationsController < ApplicationController
     include ExceptionHandler
+    load_and_authorize_resource
     before_action :set_organization, only: [:show, :update, :destroy, :attendance_settings]
   
     # GET /api/v1/organizations

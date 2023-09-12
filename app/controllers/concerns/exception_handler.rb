@@ -1,7 +1,5 @@
 module ExceptionHandler
     extend ActiveSupport::Concern
-    
-    load_and_authorize_resource
 
     included do
       rescue_from ActiveRecord::RecordNotFound do |e|

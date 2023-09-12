@@ -6,6 +6,7 @@ Rails.application.routes.draw do
       get 'users/:id', to: 'users#show'
       put 'users/:id', to: 'users#update'
 
+      put 'profile/change_password', to: 'users#change_password'
       get 'profile', to: 'users#profile'
       put 'profile', to: 'users#update_profile'
 

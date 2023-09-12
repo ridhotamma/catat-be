@@ -1,5 +1,6 @@
 class Api::V1::AttendanceSettingsController < ApplicationController
   include ExceptionHandler
+  load_and_authorize_resource
   before_action :set_attendance_setting, only: [:show, :update, :destroy]
 
   def index

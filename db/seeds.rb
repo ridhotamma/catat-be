@@ -2,6 +2,11 @@ Role.create(name: 'Admin', code: 'ADMIN')
 Role.create(name: 'Staff', code: 'STAFF')
 Role.create(name: 'Supervisor', code: 'SUPERVISOR')
 
+AttendanceStatus.create(name: 'Approved', code: 'A')
+AttendanceStatus.create(name: 'Rejected', code: 'R')
+AttendanceStatus.create(name: 'Cancelled', code: 'C')
+AttendanceStatus.create(name: 'Pending', code: 'P')
+
 5.times do
     Organization.create(
       name: Faker::Name.unique.name,

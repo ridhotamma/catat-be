@@ -1,5 +1,5 @@
 class User < ApplicationRecord
-    attr_accessor :changing_password
+    attr_accessor :changing_password, :original_password
     has_one_attached :profile_picture
 
     belongs_to :role
@@ -12,7 +12,7 @@ class User < ApplicationRecord
     validates :password, presence: true, length: { minimum: 8 }, if: :password_required?
     validate :password_complexity
     validate :acceptable_image
-
+    
     private
   
     def password_required?
@@ -26,7 +26,7 @@ class User < ApplicationRecord
         errors.add(:password, 'must include at least one lowercase letter, one uppercase letter, and one digit')
       end
     end
-    
+
     def acceptable_image
       return unless profile_picture.attached?
     
@@ -45,6 +45,5 @@ class User < ApplicationRecord
       Rails.application.routes.url_helpers.rails_blob_path(profile_picture, only_path: true)
      end
    end
-
 end
   
