@@ -1,4 +1,5 @@
 class Api::V1::DepartmentsController < ApplicationController
+    include ExceptionHandler
     before_action :set_department, only: [:show, :update, :destroy]
     
     # GET /api/v1/departments

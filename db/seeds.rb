@@ -41,3 +41,16 @@ Role.create(name: 'Supervisor', code: 'SUPERVISOR')
       organization_id: Organization.all.sample.id
     )
   end
+
+  user = User.create(
+    first_name: 'Ridho',
+    last_name: 'Tamma',
+    email: 'ridhotamma@gmail.com',
+    password: 'Admin123',
+    role_id: Role.find_by(code: 'ADMIN').id,
+    organization_id: Organization.all.sample.id,
+    department_id: Department.all.sample.id
+  )
+  user.profile_picture.attach(io: File.open(Rails.root.join('assets', 'avatar-default.jpeg')),
+  filename: 'default_profile_picture.jpg',
+  content_type: 'image/jpeg')

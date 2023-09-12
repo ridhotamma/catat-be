@@ -1,4 +1,5 @@
 class Api::V1::AttendanceSettingsController < ApplicationController
+  include ExceptionHandler
   before_action :set_attendance_setting, only: [:show, :update, :destroy]
 
   def index

@@ -1,4 +1,5 @@
 class Api::V1::RolesController < ApplicationController
+    include ExceptionHandler
     before_action :set_role, only: [:show, :update, :destroy]
   
     # GET /api/v1/roles

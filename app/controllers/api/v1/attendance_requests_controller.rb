@@ -1,11 +1,6 @@
 class Api::V1::AttendanceRequestsController < ApplicationController
-    load_and_authorize_resource
-    
+    include ExceptionHandler
     before_action :set_attendance_request, only: [:show, :update, :destroy, :approve, :reject]
-
-    rescue_from CanCan::AccessDenied do |exception|
-      render json: { error: 'Access denied', message: exception.message }, status: :forbidden
-    end
 
     # GET /api/v1/attendance_requests
     def index
@@ -72,7 +67,20 @@ class Api::V1::AttendanceRequestsController < ApplicationController
         render json: { error: 'Unable to reject attendance request' }, status: :unprocessable_entity
       end
     end
-    
+
+    # POST /api/v1/attendance_requests/:id/cancel
+    def cancel
+      if @attendance_request.update(attendance_status_id: Attendance.find_by(code: 'C').id)
+        render json: { message: 'Attendance request cancel successfully', data:  @attendance_request.as_json(include: {
+          requested_by: { only: [:id, :email] },
+          approved_by: { only: [:id, :email] },
+          attendance_status: { only: [:id, :name, :code ] }
+        }, except: [:requested_by_id, :approved_by_id, :attendance_status_id ]) }
+      else
+        render json: { error: 'Unable to cancel attendance request' }, status: :unprocessable_entity
+      end
+    end
+
     # DELETE /api/v1/attendance_requests/1
     def destroy
       @attendance_request.destroy
@@ -89,4 +97,3 @@ class Api::V1::AttendanceRequestsController < ApplicationController
       params.require(:attendance_request).permit(:requested_by_id, :approved_by_id, :notes, :requested_at, :live_location, :selfie_image)
     end
   end
-  

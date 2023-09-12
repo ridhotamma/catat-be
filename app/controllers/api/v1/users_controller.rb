@@ -48,16 +48,6 @@ class Api::V1::UsersController < ApplicationController
         render json: { error: @user.errors.full_messages.join(', ') }, status: :unprocessable_entity
       end
     end
-
-    def login
-      user = User.find_by(email: params[:email])
-      if user && user.authenticate(params[:password])
-        token = generate_token(user)
-        render json: { message: 'Login successful', user: UserSerializer.new(user), token: token }
-      else
-        render json: { error: 'Invalid email or password' }, status: :unauthorized
-      end
-    end
     
     def profile
       render json: @current_user
@@ -94,10 +84,6 @@ class Api::V1::UsersController < ApplicationController
       user_params[:role_id] = @current_user.role.code == 'ADMIN' ? params[:role_id] : Role.find_by(code: 'STAFF').id
     
       user_params
-    end
-
-    def generate_token(user)
-      JWT.encode({ user_id: user.id }, Rails.application.secrets.secret_key_base)
     end
 
     def set_user
