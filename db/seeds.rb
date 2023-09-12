@@ -5,7 +5,6 @@ Role.create(name: 'Supervisor', code: 'SUPERVISOR')
 5.times do
     Organization.create(
       name: Faker::Name.unique.name,
-      logo: "https://w7.pngwing.com/pngs/232/373/png-transparent-delaware-company-management-marketing-asset-random-buttons-company-text-comic-book.png",
       description: Faker::Company.catch_phrase
     )
   end
@@ -22,8 +21,7 @@ Role.create(name: 'Supervisor', code: 'SUPERVISOR')
   20.times do
     User.create(
       email: Faker::Internet.email,
-      password: 'password', # Set a default password for all users
-      profile_picture: "https://w7.pngwing.com/pngs/232/373/png-transparent-delaware-company-management-marketing-asset-random-buttons-company-text-comic-book.png",
+      password: 'Password123', # Set a default password for all users
       role_id: Role.all.sample.id,
       organization_id: Organization.all.sample.id,
       department_id: Department.all.sample.id
