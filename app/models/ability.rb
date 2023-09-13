@@ -11,7 +11,7 @@ class Ability
       can :manage, AttendanceSetting
       
     elsif user.role.code == 'SUPERVISOR'
-      can [:index, :show, :approve, :reject], AttendanceRequest
+      can [:index, :show, :all_requests, :approve, :reject], AttendanceRequest
       can :manage, User
       can [:index, :show], Role
       can :manage, Department

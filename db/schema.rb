@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_12_171737) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_13_033031) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -46,12 +46,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_12_171737) do
     t.bigint "requested_by_id"
     t.bigint "approved_by_id"
     t.string "notes"
-    t.datetime "requested_at"
+    t.datetime "clock_in"
     t.string "live_location"
     t.string "selfie_image"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "attendance_status_id", null: false
+    t.datetime "clock_out", precision: nil
     t.index ["approved_by_id"], name: "index_attendance_requests_on_approved_by_id"
     t.index ["attendance_status_id"], name: "index_attendance_requests_on_attendance_status_id"
     t.index ["requested_by_id"], name: "index_attendance_requests_on_requested_by_id"

@@ -19,6 +19,10 @@ Rails.application.routes.draw do
         get 'attendance_settings', on: :member
       end
 
+      post 'attendance_requests/clock_in', to: 'attendance_requests#clock_in'
+      post 'attendance_requests/clock_out', to: 'attendance_requests#clock_out'
+      get 'attendance_requests/all', to: 'attendance_requests#all_requests'
+
       resources :attendance_requests do
         member do
           post 'approve'
