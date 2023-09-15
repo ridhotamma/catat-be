@@ -27,8 +27,8 @@ jobs:
         uses: ruby/setup-ruby@55283cc23133118229fd3f97f9336ee23a179fcf # v1.146.0
         with:
           bundler-cache: true
-      - name: Add platform to bundle lock
-        run: bundle lock --add-platform x86_64-linux
+      - name: Create .bundle/config
+        run: echo 'BUNDLE_PLATFORMS: "ruby x86_64-linux"' > $GITHUB_WORKSPACE/.bundle/config
       - name: Bundle install
         run: bundle install --jobs 4
       - name: Set up database schema
@@ -45,6 +45,8 @@ jobs:
         uses: ruby/setup-ruby@55283cc23133118229fd3f97f9336ee23a179fcf # v1.146.0
         with:
           bundler-cache: true
+      - name: Create .bundle/config
+        run: echo 'BUNDLE_PLATFORMS: "ruby x86_64-linux"' > $GITHUB_WORKSPACE/.bundle/config
       - name: Security audit dependencies
         run: bin/bundler-audit --update
       - name: Security audit application code
