@@ -82,18 +82,18 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def change_password
-        old_password = params[:old_password]
-        new_password = params[:new_password]
+    old_password = params[:old_password]
+    new_password = params[:new_password]
 
-        if @user.authenticate(old_password)
-          if @user.update(password: new_password)
-            render json: { message: "Password successfully changed" }, status: :ok
-          else
-            render json: { error: "Failed to update password" }, status: :unprocessable_entity
-          end
-        else
-          render json: { error: "Wrong Password" }, status: :unauthorized
-        end
+    if @user.authenticate(old_password)
+      if @user.update(password: new_password)
+        render json: { message: "Password successfully changed" }, status: :ok
+      else
+        render json: { error: "Failed to update password" }, status: :unprocessable_entity
+      end
+    else
+      render json: { error: "Wrong Password" }, status: :unauthorized
+    end
   end
 
   private
