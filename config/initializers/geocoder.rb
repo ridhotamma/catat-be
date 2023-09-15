@@ -1,4 +1,3 @@
 Geocoder.configure(
-    timeout: 10
+  timeout: 10
 )
-  

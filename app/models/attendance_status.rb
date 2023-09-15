@@ -1,3 +1,3 @@
 class AttendanceStatus < ApplicationRecord
-    has_many :attendance_request
+  has_many :attendance_request
 end

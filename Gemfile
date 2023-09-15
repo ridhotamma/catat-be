@@ -6,7 +6,7 @@ ruby "3.2.2"
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 7.0.7", ">= 7.0.7.2"
 gem "active_model_serializers"
-gem 'geocoder'
+gem "geocoder"
 
 # Use postgresql as the database for Active Record
 gem "pg", "~> 1.1"
@@ -26,12 +26,14 @@ gem "puma", "~> 5.0"
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
 gem "bcrypt", "~> 3.1.7"
 gem "jwt"
-gem 'kaminari'
-gem 'faker', '~> 2.18', require: 'faker'
-gem 'cancancan'
+gem "kaminari"
+gem "faker", "~> 2.18", require: "faker"
+gem "cancancan"
 
 group :development, :test do
-  gem 'rspec-rails'
+  gem "rspec-rails"
+  gem "rubocop", require: false
+  gem "rufo", require: false
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
@@ -55,4 +57,3 @@ group :development do
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
 end
-
