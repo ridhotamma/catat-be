@@ -66,7 +66,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_14_012229) do
     t.boolean "enable_auto_approval_attendance", default: false
     t.bigint "organization_id", null: false
     t.boolean "enable_one_request_per_day", default: false
-    t.integer "max_radius", default: 0
+    t.integer "max_radius", default: 1000
     t.index ["organization_id"], name: "index_attendance_settings_on_organization_id"
   end
 
