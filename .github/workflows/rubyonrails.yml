@@ -23,12 +23,12 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      - name: Add platform to bundle lock
-        run: bundle lock --add-platform x86_64-linux
       - name: Install Ruby and gems
         uses: ruby/setup-ruby@55283cc23133118229fd3f97f9336ee23a179fcf # v1.146.0
         with:
           bundler-cache: true
+      - name: Add platform to bundle lock
+        run: bundle lock --add-platform x86_64-linux
       - name: Bundle install
         run: bundle install --jobs 4
       - name: Set up database schema
