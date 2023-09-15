@@ -13,6 +13,8 @@ class Api::V1::AuthController < ApplicationController
     private
 
     def generate_token(user)
-        JWT.encode({ user_id: user.id }, Rails.application.secrets.secret_key_base)
-      end
+      expiration_time = 12.hour.from_now.to_i
+      payload = { user_id: user.id, exp: expiration_time }
+      JWT.encode(payload, Rails.application.secrets.secret_key_base)
+    end
 end

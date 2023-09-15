@@ -9,7 +9,7 @@ class Api::V1::AttendanceSettingsController < ApplicationController
   end
 
   def show
-    render json: { data: @attendance_setting.as_json(except: ['created_at', 'updated_at']) }
+    render json: @attendance_setting
   end
 
   def create
@@ -42,6 +42,6 @@ class Api::V1::AttendanceSettingsController < ApplicationController
   end
 
   def attendance_setting_params
-    params.require(:attendance_setting).permit(:enable_live_location, :enable_take_selfie, :enable_auto_approval_attendance, :organization_id)
+    params.require(:attendance_setting).permit(:enable_live_location, :enable_take_selfie, :enable_auto_approval_attendance, :enable_one_request_per_day, :organization_id)
   end
 end

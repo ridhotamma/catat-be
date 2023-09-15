@@ -5,22 +5,37 @@ class Organization < ApplicationRecord
     
     validate :acceptable_image
 
+    after_create :create_default_attendance_setting
+
     def acceptable_image
-        return unless profile_picture.attached?
+        return unless logo.attached?
       
-        unless profile_picture.blob.byte_size <= 5.megabyte
-          errors.add(:profile_picture, "is too big")
+        unless logo.blob.byte_size <= 5.megabyte
+          errors.add(:logo, "is too big")
         end
       
         acceptable_types = ["image/jpeg", "image/png"]
-        unless acceptable_types.include?(profile_picture.content_type)
-          errors.add(:profile_picture, "must be a JPEG or PNG")
+        unless acceptable_types.include?(logo.content_type)
+          errors.add(:logo, "must be a JPEG or PNG")
         end
       end
   
      def logo_url
       if logo.attached?
-        Rails.application.routes.url_helpers.rails_blob_path(logo, only_path: true)
-       end
+        ActiveStorage::Blob.service.path_for(logo.key)
+      else
+        Rails.root.join('assets', 'organization-default.jpeg')
+      end
      end
+
+     # build attendance_setting when created
+     def create_default_attendance_setting
+      unless attendance_setting
+        self.build_attendance_setting(
+          enable_live_location: true,
+          enable_take_selfie: true,
+          enable_auto_approval_attendance: true
+        ).save
+      end
+    end
 end

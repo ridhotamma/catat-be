@@ -1,33 +1,43 @@
 Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
-      get 'users', to: 'users#index'
-      post 'users', to: 'users#create'
-      get 'users/:id', to: 'users#show'
-      put 'users/:id', to: 'users#update'
-
-      put 'profile/change_password', to: 'users#change_password'
-      get 'profile', to: 'users#profile'
-      put 'profile', to: 'users#update_profile'
-
+      # Authentication
       post 'auth/login', to: 'auth#login'
 
-      resources :attendance_settings
-      resources :departments
-      resources :roles
-      resources :organizations do
-        get 'attendance_settings', on: :member
+      # Users
+      resources :users, only: [:index, :create, :show, :update] do
+        collection do
+          put 'profile/change_password', to: 'users#change_password'
+          get 'profile', to: 'users#profile'
+          put 'profile', to: 'users#update_profile'
+        end
       end
 
-      post 'attendance_requests/clock_in', to: 'attendance_requests#clock_in'
-      post 'attendance_requests/clock_out', to: 'attendance_requests#clock_out'
-      get 'attendance_requests/all', to: 'attendance_requests#all_requests'
+      # Search Locations
+      post 'search_locations', to: 'search_locations#search'
 
-      resources :attendance_requests do
+      # Attendance Settings, Departments, and Roles
+      resources :attendance_settings, :departments, :roles, only: [:index, :create, :show, :update]
+
+      # Organizations
+      resources :organizations, only: [:index, :create, :show, :update] do
+        member do
+          get 'attendance_settings', to: 'organizations#attendance_settings'
+          put 'attendance_settings', to: 'organizations#update_attendance_settings'
+        end
+      end
+
+      # Attendance Requests
+      resources :attendance_requests, only: [:index, :create, :show, :update] do
         member do
           post 'approve'
           post 'reject'
           post 'cancel'
+        end
+        collection do
+          post 'clock_in', to: 'attendance_requests#clock_in'
+          post 'clock_out', to: 'attendance_requests#clock_out'
+          get 'all_requests', to: 'attendance_requests#all_requests'
         end
       end
     end

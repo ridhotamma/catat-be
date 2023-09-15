@@ -1,29 +1,45 @@
-Role.create(name: 'Admin', code: 'ADMIN')
-Role.create(name: 'Staff', code: 'STAFF')
-Role.create(name: 'Supervisor', code: 'SUPERVISOR')
+Role.find_or_create_by(name: 'Admin', code: 'ADMIN')
+Role.find_or_create_by(name: 'Staff', code: 'STAFF')
+Role.find_or_create_by(name: 'Supervisor', code: 'SUPERVISOR')
 
-AttendanceStatus.create(name: 'Approved', code: 'A')
-AttendanceStatus.create(name: 'Rejected', code: 'R')
-AttendanceStatus.create(name: 'Cancelled', code: 'C')
-AttendanceStatus.create(name: 'Pending', code: 'P')
+AttendanceStatus.find_or_create_by(name: 'Approved', code: 'A')
+AttendanceStatus.find_or_create_by(name: 'Rejected', code: 'R')
+AttendanceStatus.find_or_create_by(name: 'Cancelled', code: 'C')
+AttendanceStatus.find_or_create_by(name: 'Pending', code: 'P')
 
-5.times do
-    Organization.create(
-      name: Faker::Name.unique.name,
-      description: Faker::Company.catch_phrase
-    )
-  end
+Organization.create(
+  name: 'Yayasan Quadra',
+  description: 'Panti Asuhan untuk calon programmer',
+  latitude: 37.7749, 
+  longitude: -122.4194,
+)
 
+AttendanceSetting.create(
+  enable_live_location: true,
+  enable_take_selfie: false,
+  enable_auto_approval_attendance: false,
+  organization_id: Organization.all.sample.id
+)
 
-  10.times do
-    Department.create(
-      name: Faker::Name.unique.name,
-      description: Faker::Lorem.sentence,
-      organization_id: Organization.all.sample.id
-    )
-  end
+Department.create(
+  name: 'Kesenian',
+  description: 'Mengurus kegiatan yg berkaitan dengan kesenian',
+  organization_id: 1
+)
 
-  20.times do
+Department.create(
+  name: 'Kesehatan',
+  description: 'Mengurus urusan terkait kesehatan',
+  organization_id: 1
+)
+
+Department.create(
+  name: 'Rohani',
+  description: 'Mengurus kegiatan yg berkaitan dengan kerohanian',
+  organization_id: 1
+)
+
+  5.times do
     user = User.create(
       first_name: Faker::Name.unique.name,
       last_name: Faker::Name.unique.name,
@@ -38,15 +54,6 @@ AttendanceStatus.create(name: 'Pending', code: 'P')
     content_type: 'image/jpeg')
   end
 
-  1.times do
-    AttendanceSetting.create(
-      enable_live_location: true,
-      enable_take_selfie: true,
-      enable_auto_approval_attendance: true,
-      organization_id: Organization.all.sample.id
-    )
-  end
-
   user = User.create(
     first_name: 'Ridho',
     last_name: 'Tamma',
@@ -59,3 +66,14 @@ AttendanceStatus.create(name: 'Pending', code: 'P')
   user.profile_picture.attach(io: File.open(Rails.root.join('assets', 'avatar-default.jpeg')),
   filename: 'default_profile_picture.jpg',
   content_type: 'image/jpeg')
+
+  AttendanceRequest.create(
+    requested_by_id: 1,
+    approved_by_id: 2,
+    notes: "Sample attendance request 1",
+    clock_in: Time.now - 2.hours,
+    attendance_status_id: 3,
+    clock_out: Time.now - 1.hour,
+    latitude: 37.7749, 
+    longitude: -122.4194,
+  )

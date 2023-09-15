@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_13_033031) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_14_012229) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -47,24 +47,26 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_13_033031) do
     t.bigint "approved_by_id"
     t.string "notes"
     t.datetime "clock_in"
-    t.string "live_location"
-    t.string "selfie_image"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "attendance_status_id", null: false
     t.datetime "clock_out", precision: nil
+    t.float "latitude"
+    t.float "longitude"
     t.index ["approved_by_id"], name: "index_attendance_requests_on_approved_by_id"
     t.index ["attendance_status_id"], name: "index_attendance_requests_on_attendance_status_id"
     t.index ["requested_by_id"], name: "index_attendance_requests_on_requested_by_id"
   end
 
   create_table "attendance_settings", force: :cascade do |t|
-    t.boolean "enable_live_location"
-    t.boolean "enable_take_selfie"
+    t.boolean "enable_live_location", default: false
+    t.boolean "enable_take_selfie", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "enable_auto_approval_attendance"
+    t.boolean "enable_auto_approval_attendance", default: false
     t.bigint "organization_id", null: false
+    t.boolean "enable_one_request_per_day", default: false
+    t.integer "max_radius", default: 0
     t.index ["organization_id"], name: "index_attendance_settings_on_organization_id"
   end
 
@@ -73,6 +75,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_13_033031) do
     t.string "code"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["code"], name: "index_attendance_statuses_on_code", unique: true
+    t.index ["name"], name: "index_attendance_statuses_on_name", unique: true
   end
 
   create_table "departments", force: :cascade do |t|
@@ -89,6 +93,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_13_033031) do
     t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.float "latitude"
+    t.float "longitude"
   end
 
   create_table "roles", force: :cascade do |t|
@@ -96,6 +102,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_13_033031) do
     t.string "code"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["code"], name: "index_roles_on_code", unique: true
+    t.index ["name"], name: "index_roles_on_name", unique: true
   end
 
   create_table "users", force: :cascade do |t|

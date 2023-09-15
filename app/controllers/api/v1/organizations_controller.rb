@@ -41,11 +41,19 @@ class Api::V1::OrganizationsController < ApplicationController
     end
     
     
-    # GET /api/v1/organizations/:id/attendance_settings
+    # GET /api/v1/organizations/attendance_settings
     def attendance_settings
-      puts "HIHIHI"
-      if @organization.attendance_setting
-        render json: @organization.attendance_setting
+      if @current_user.organization.attendance_setting
+        render json: @current_user.organization.attendance_setting
+      else
+        render json: { message: 'Attendance setting not found for this organization' }, status: :not_found
+      end
+    end
+
+    # PUT /api/v1/organizations/attendance_settings
+    def update_attendance_settings
+      if @current_user.organization.attendance_setting.update(attendance_setting_params)
+        render json: @current_user.organization.attendance_setting
       else
         render json: { message: 'Attendance setting not found for this organization' }, status: :not_found
       end
@@ -59,6 +67,10 @@ class Api::V1::OrganizationsController < ApplicationController
   
     def organization_params
       params.require(:organization).permit(:name, :logo, :description)
+    end
+
+    def attendance_setting_params
+      params.permit(:enable_live_location, :enable_take_selfie, :enable_auto_approval_attendance, :enable_one_request_per_day)
     end
   end
   

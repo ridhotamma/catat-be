@@ -7,9 +7,19 @@ class Api::V1::UsersController < ApplicationController
     def index
       page = params[:page] || 1
       per_page = params[:per_page] || 10
-    
-      @users = User.page(page).per(per_page)
-    
+      
+      sort_column = params[:sort_column] || 'id'
+      sort_order = params[:sort_order] || 'desc'
+
+      search_column = params[:search_column]
+      search_value = params[:search_value]
+
+      @users = User.order("#{sort_column} #{sort_order}").page(page).per(per_page)
+      
+      if search_column.present? && search_value.present?
+        @users = @users.where("lower(#{search_column}) LIKE ?", "%#{search_value.downcase}%")
+      end
+
       total_record = @users.total_count
       total_page = @users.total_pages
     
@@ -75,8 +85,6 @@ class Api::V1::UsersController < ApplicationController
       old_password = params[:old_password]
       new_password = params[:new_password]
       
-      render json: { data: @user.original_password}
-      return
       if @user.authenticate(old_password)
         if @user.update(password: new_password)
           render json: { message: 'Password successfully changed' }, status: :ok

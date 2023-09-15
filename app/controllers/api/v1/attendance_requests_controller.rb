@@ -3,6 +3,7 @@ class Api::V1::AttendanceRequestsController < ApplicationController
     load_and_authorize_resource
 
     before_action :set_attendance_request, only: [:show, :update, :destroy, :approve, :reject, :cancel]
+    before_action :set_attendance_setting, only: [:clock_in, :clock_out]
 
     # GET /api/v1/attendance_requests
     def index
@@ -81,20 +82,27 @@ class Api::V1::AttendanceRequestsController < ApplicationController
   
     # POST /api/v1/attendance_requests
     def clock_in
-      existing_request = AttendanceRequest.where(requested_by: @current_user, clock_in: Date.today.beginning_of_day..Date.today.end_of_day).first
-
-      if existing_request
-        render json: { error: "A clock-in request for today already exists." }, status: :unprocessable_entity
-        return
-      end
-
       @attendance_request = AttendanceRequest.new(attendance_request_params)
       @attendance_request.attendance_status = AttendanceStatus.find_by(code:'P')
       @attendance_request.requested_by = @current_user
       @attendance_request.clock_in = Time.now
+
+      existing_request = AttendanceRequest.where(requested_by: @current_user, clock_in: Date.today.beginning_of_day..Date.today.end_of_day).first
+
+      # if one request per day is enabled
+      if existing_request && @attendance_setting.enable_one_request_per_day
+        render json: { error: "A clock-in request for today already exists." }, status: :unprocessable_entity
+        return
+      end
       
+      # if one live location is enabled
+      if @attendance_setting.enable_live_location && !@attendance_request.within_organization_radius?
+        render json: { error: "Your Location is not within the organization place.", info: @attendance_request.self_and_organization_location }, status: :unprocessable_entity
+        return
+      end
+
       if @attendance_request.save
-        render json: @attendance_request, serializer: AttendanceRequestSerializer, status: :created
+        render json: { message: 'Clock in Request Success', data: AttendanceRequestSerializer.new(@attendance_request) }, status: :created
       else
         render json: @attendance_request.errors, status: :unprocessable_entity
       end
@@ -104,7 +112,7 @@ class Api::V1::AttendanceRequestsController < ApplicationController
     def clock_out
       existing_request = AttendanceRequest.where(requested_by: @current_user, clock_out: Date.today.beginning_of_day..Date.today.end_of_day).first
 
-      if existing_request
+      if existing_request && @attendance_setting[:enable_one_request_per_day]
         render json: { error: "A clock-out request for today already exists." }, status: :unprocessable_entity
         return
       end
@@ -112,7 +120,7 @@ class Api::V1::AttendanceRequestsController < ApplicationController
       @attendance_request = AttendanceRequest.where(requested_by: @current_user, clock_in: Date.today.beginning_of_day..Date.today.end_of_day).last
 
       if @attendance_request.update(clock_out:Time.now)
-        render json: @attendance_request, serializer: AttendanceRequestSerializer, status: :created
+        render json: { message: 'Clock out Request Success', data: AttendanceRequestSerializer.new(@attendance_request)}, status: :created
       else
         render json: @attendance_request.errors, status: :unprocessable_entity
       end
@@ -161,12 +169,16 @@ class Api::V1::AttendanceRequestsController < ApplicationController
     end
   
     private
-  
+    
+    def set_attendance_setting
+      @attendance_setting = AttendanceSetting.find_by(organization: @current_user.organization)
+    end
+
     def set_attendance_request
       @attendance_request = AttendanceRequest.find(params[:id])
     end
   
     def attendance_request_params
-      params.require(:attendance_request).permit(:notes, :live_location, :selfie_image)
+      params.permit(:notes, :latitude, :longitude, :selfie_image)
     end
   end

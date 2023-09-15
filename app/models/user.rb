@@ -1,5 +1,5 @@
 class User < ApplicationRecord
-    attr_accessor :changing_password, :original_password
+    attr_accessor :changing_password
     has_one_attached :profile_picture
 
     belongs_to :role
@@ -41,8 +41,10 @@ class User < ApplicationRecord
     end
 
    def profile_picture_url
-    if profile_picture.attached?
-      Rails.application.routes.url_helpers.rails_blob_path(profile_picture, only_path: true)
+     if profile_picture.attached?
+      ActiveStorage::Blob.service.path_for(profile_picture.key)
+     else
+      Rails.root.join('assets', 'avatar-default.jpeg')
      end
    end
 end
