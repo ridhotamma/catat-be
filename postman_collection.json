@@ -1,0 +1,945 @@
+{
+	"info": {
+		"_postman_id": "79dde559-0798-4bad-8dd8-d6c0f4bd2ebf",
+		"name": "Catat - Attendance System",
+		"description": "Api Collection for Attendance system management",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24496405"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "ridhotamma@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "Admin123",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api_url}}/auth/login",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						},
+						"description": "login user"
+					},
+					"response": []
+				}
+			],
+			"description": "authentication module"
+		},
+		{
+			"name": "User Management",
+			"item": [
+				{
+					"name": "Profile",
+					"item": [
+						{
+							"name": "profile",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{api_url}}/users/profile",
+									"host": [
+										"{{api_url}}"
+									],
+									"path": [
+										"users",
+										"profile"
+									]
+								},
+								"description": "get user profile (current login user)"
+							},
+							"response": []
+						},
+						{
+							"name": "update profile",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "first_name",
+											"value": "Ridho",
+											"type": "text"
+										},
+										{
+											"key": "last_name",
+											"value": "Tamma",
+											"type": "text"
+										},
+										{
+											"key": "profile_picture",
+											"type": "file",
+											"src": "/Users/ridhotamma/Desktop/Screenshot 2023-09-05 at 14.52.33.png"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{api_url}}/users/profile",
+									"host": [
+										"{{api_url}}"
+									],
+									"path": [
+										"users",
+										"profile"
+									]
+								},
+								"description": "update current login user profile"
+							},
+							"response": []
+						},
+						{
+							"name": "change password",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"old_password\": \"Admin123\",\n    \"new_password\": \"Admin123\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{api_url}}/users/profile/change_password",
+									"host": [
+										"{{api_url}}"
+									],
+									"path": [
+										"users",
+										"profile",
+										"change_password"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"description": "user profile"
+				},
+				{
+					"name": "index",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{api_url}}/users?per_page=30&search_column=first_name&search_value=ridho",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"users"
+							],
+							"query": [
+								{
+									"key": "per_page",
+									"value": "30"
+								},
+								{
+									"key": "search_column",
+									"value": "first_name"
+								},
+								{
+									"key": "search_value",
+									"value": "ridho"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "show",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{api_url}}/users/23",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"users",
+								"23"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "first_name",
+									"value": "Adam Biasa 12",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api_url}}/users/23",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"users",
+								"23"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "first_name",
+									"value": "Adam",
+									"type": "text"
+								},
+								{
+									"key": "last_name",
+									"value": "Malik",
+									"type": "text"
+								},
+								{
+									"key": "role_id",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "Admin123",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "adam.test@admin.com",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api_url}}/users",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "user management"
+		},
+		{
+			"name": "Attendance Request",
+			"item": [
+				{
+					"name": "clock in",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"notes\": \"\",\n    \"latitude\": 40.9749,\n    \"longitude\": -122.4194\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_url}}/attendance_requests/clock_in",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"attendance_requests",
+								"clock_in"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "clock out",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"notes\": \"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_url}}/attendance_requests/clock_out",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"attendance_requests",
+								"clock_out"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "index",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"notes\": \"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_url}}/attendance_requests",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"attendance_requests"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "all requests",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"notes\": \"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_url}}/attendance_requests/all?month=9&year=2023&page=1&per_page=5",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"attendance_requests",
+								"all"
+							],
+							"query": [
+								{
+									"key": "month",
+									"value": "9"
+								},
+								{
+									"key": "year",
+									"value": "2023"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "per_page",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "reject",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_url}}/attendance_requests/23/reject",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"attendance_requests",
+								"23",
+								"reject"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "approve",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_url}}/attendance_requests/23/approve",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"attendance_requests",
+								"23",
+								"approve"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "cancel",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_url}}/attendance_requests/2/cancel",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"attendance_requests",
+								"2",
+								"cancel"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Organization Management",
+			"item": [
+				{
+					"name": "Get Attendance Settings",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{api_url}}/organizations/1/attendance_settings",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"organizations",
+								"1",
+								"attendance_settings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Attendance Settings",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"enable_live_location\": true,\n    \"enable_take_selfie\": true,\n    \"enable_auto_approval_attendance\": true,\n    \"enable_one_request_per_day\": false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_url}}/organizations/1/attendance_settings",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"organizations",
+								"1",
+								"attendance_settings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "index",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{api_url}}/organizations",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"organizations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "show",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{api_url}}/organizations/1",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"organizations",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "manage the organization details"
+		},
+		{
+			"name": "Attendance Setting",
+			"item": [
+				{
+					"name": "update",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"enable_live_location\": false,\n    \"enable_take_selfie\": false,\n    \"enable_auto_approval_attendance\": false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_url}}/attendance_settings/1",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"attendance_settings",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "show",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{api_url}}/attendance_settings/1",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"attendance_settings",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Department Management",
+			"item": [
+				{
+					"name": "Index",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{api_url}}/departments?search_column=description&search_value=mengurus",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"departments"
+							],
+							"query": [
+								{
+									"key": "sort_column",
+									"value": "name",
+									"disabled": true
+								},
+								{
+									"key": "sort_order",
+									"value": "desc",
+									"disabled": true
+								},
+								{
+									"key": "search_column",
+									"value": "description"
+								},
+								{
+									"key": "search_value",
+									"value": "mengurus"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Engineering\",\n  \"description\": \"Software Development Department\",\n  \"organization_id\": 1\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_url}}/departments",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"departments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"description\": \"About Engineering\",\n  \"organization_id\": 1\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_url}}/departments/4",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"departments",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Kebersihan\",\n    \"description\": \"Tentang kebersihan\",\n    \"organization_id\": \"1\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_url}}/departments",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"departments"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "manage user department"
+		},
+		{
+			"name": "Search Location",
+			"item": [
+				{
+					"name": "Search",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"address\": \"-6.355088401662153, 107.42097772644617\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_url}}/search_locations",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"search_locations"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
